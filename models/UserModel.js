@@ -4,11 +4,13 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
   username: {
     type: String,
-    required: 'Please enter the username'
+    required: 'Please enter the username',
+    unique: true
   },
   email: {
     type: String,
-    required: 'Please enter your email address'
+    required: 'Please enter your email address',
+    unique: true
   },
   status: {
     type: [{
