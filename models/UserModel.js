@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt');
 
 var UserSchema = new Schema({
   username: {
@@ -31,23 +32,14 @@ var UserSchema = new Schema({
   }
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', async function(next) {
   var user = this
-  bcrypt.hash(user.password, 10, (err, hash) => {
-    if (err) {
-      return next(err)
-    }
-    user.password = hash
-    next()
-  })
-
-  bcrypt.hash(user.passwordconfirm, 10, (err, hash) => {
-    if (err) {
-      return next(err)
-    }
-    user.passwordconfirm = hash
-    next()
-  })
+  const salt = await bcrypt.genSalt(10)
+  const passwordHash = await bcrypt.hash(user.password, salt)
+  const passwordConfirmHash = await bcrypt.hash(user.passwordconfirm, salt)
+  user.password = passwordHash
+  user.passwordconfirm = passwordConfirmHash
+  next()
 })
 
 module.exports = mongoose.model('User', UserSchema);
