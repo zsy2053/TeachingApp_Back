@@ -14,12 +14,10 @@ exports.list_all_users = (req, res) => {
 exports.create_a_user = (req, res) => {
   var new_user = new User(req.body);
   new_user.save((err, user) => {
-    console.log("err", err)
-    console.log("user", user)
     if (err) {
-      return res.json(err);
+      return res.json({success: false, err: err.message});
     }
-    return res.json(user)
+    return res.json({success: false, user: user})
   });
 };
 
