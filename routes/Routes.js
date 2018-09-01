@@ -1,6 +1,10 @@
 module.exports = (app) => {
   var userList = require('../controllers/UserController');
+  var stripe = require('../controllers/StripeController');
 
+  app.route('/charge')
+    .post(stripe.createPayment)
+    
   app.route('/users')
     .get(userList.list_all_users)
     .post(userList.create_a_user);
