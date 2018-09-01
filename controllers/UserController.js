@@ -23,6 +23,7 @@ exports.create_a_user = (req, res) => {
 };
 
 exports.sign_in_a_user = (req, res) => {
+  console.log("entered user")
   User.findOne({
     username: req.body.username
   }, (err, user) => {
